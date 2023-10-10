@@ -1,7 +1,9 @@
 {
   "dependencies": {
     "db": "^4.0.1",
+    "dotenv": "^16.3.1",
     "express": "^4.18.2",
-    "mongo": "^0.1.0"
+    "mongo": "^0.1.0",
+    "mongoose": "^7.6.1"
   }
 }

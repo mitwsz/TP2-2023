@@ -1,6 +1,15 @@
 const express = require('express')
 const app = express()
 const mongoose = require('mongoose')
+const dotenv = require('dotenv')
+
+if(process.env.OMAGA === 'DEV'){
+    dotenv.config({path: './config/.env.dev'})
+}
+if(process.env.OMAGA === 'PROD'){
+    dotenv.config({path: './config/.env.prod'})
+}
+
 app.use(express.json())
 
 const modeloUser = mongoose.model('contas', new mongoose.Schema({
@@ -9,7 +18,7 @@ const modeloUser = mongoose.model('contas', new mongoose.Schema({
 }))
 
 
-mongoose.connect("mongodb://localhost:27017/Mongo DB: server")
+mongoose.connect(process.env.URL)
  .then(()=>{
 
 app.get('/get/:email', async (req,res)=>{
