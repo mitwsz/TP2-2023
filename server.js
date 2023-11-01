@@ -21,9 +21,12 @@ const modeloUser = mongoose.model('contas', new mongoose.Schema({
 mongoose.connect('mongodb://127.0.0.1:27017/morango')
  .then(()=>{
 
-app.get('/get/:email', async (req,res)=>{
-    const userFound = await modeloUser.findOne({email: req.params.email})
+app.post('/get/', async (req,res)=>{
+    const userFound = await modeloUser.findOne({email: req.body.email, password: req.body.password})
     console.log(userFound);
+    if(userFound === null){
+       return res.send('Poxa, essa conta não foi encontrada :(')
+    }
     res.send(userFound)
 })
   
@@ -46,6 +49,6 @@ app.use((req,res)=>{
     res.send('Infelizmente, não foi possível encontrar a sua rota! :(')
 })
 
-app.listen(2000, ()=>console.log(`O servidor está rodando certinho nessa porta aqui: ${2000}`))
+app.listen(3000, ()=>console.log(`O servidor está rodando certinho nessa porta aqui: ${3000}`))
 
 })
