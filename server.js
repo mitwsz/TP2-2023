@@ -18,7 +18,7 @@ const modeloUser = mongoose.model('contas', new mongoose.Schema({
 }))
 
 
-mongoose.connect(process.env.URL)
+mongoose.connect('mongodb://127.0.0.1:27017/morango')
  .then(()=>{
 
 app.get('/get/:email', async (req,res)=>{
@@ -34,7 +34,7 @@ app.post('/post',async (req,res) =>{
 
 app.put('/put', async (req,res)=>{
     const updatedUser = await modeloUser.findOneAndUpdate({email: req.body.email, password: req.body.password}, {email: req.body.newemail, password: req.body.newpassword})
-    res.send(updatedUser)
+    res.send({ message: "Seus dados foram atualizados :)" })
 })
   
 app.delete('/delete', async (req,res)=>{
@@ -46,6 +46,6 @@ app.use((req,res)=>{
     res.send('Infelizmente, não foi possível encontrar a sua rota! :(')
 })
 
-app.listen(3000, ()=>console.log(`O servidor está rodando certinho nessa porta aqui: ${3000}`))
+app.listen(2000, ()=>console.log(`O servidor está rodando certinho nessa porta aqui: ${2000}`))
 
 })
