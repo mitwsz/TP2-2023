@@ -45,6 +45,31 @@ app.delete('/delete', async (req,res)=>{
     res.send(userDeleted)
 })  
 
+app.post('/getPintura/', async (req,res)=>{
+    const pinturaFound = await modeloUser.findOne({urldapintura: req.body.pintura})
+    console.log(pinturaFound);
+    if(pinturaFound === null){
+       return res.send('Poxa, essa pintura não foi encontrada :(')
+    }
+    res.send(pinturaFound)
+})
+  
+app.post('/postPintura',async (req,res) =>{
+    const pinturaCreated = await modeloUser.create({urldapintura: req.body.pintura})
+    res.send(pinturaCreated)
+})
+
+app.put('/putPintura', async (req,res)=>{
+    const updatedPintura = await modeloUser.findOneAndUpdate({urldapintura: req.body.pintura}, {urldapintura: req.body.pintura.newpintura})
+    res.send({ message: "A pintura foi atualizada :)" })
+})
+
+app.delete('/deletePintura', async (req,res)=>{
+    const pinturaDeleted = await modeloUser.deleteOne({urldapintura: req.body.pintura})
+    res.send(pinturaDeleted)
+})  
+
+
 app.use((req,res)=>{
     res.send('Infelizmente, não foi possível encontrar a sua rota! :(')
 })
