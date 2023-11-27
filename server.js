@@ -16,7 +16,9 @@ const modeloUser = mongoose.model('contas', new mongoose.Schema({
     email: String,
     password: String
 }))
-
+const modeloPintura = mongoose.model('contas', new mongoose.Schema({
+    url: String,
+}))
 
 mongoose.connect('mongodb://127.0.0.1:27017/morango')
  .then(()=>{
@@ -46,7 +48,7 @@ app.delete('/delete', async (req,res)=>{
 })  
 
 app.post('/getPintura/', async (req,res)=>{
-    const pinturaFound = await modeloUser.findOne({urldapintura: req.body.pintura})
+    const pinturaFound = await modeloPintura.findOne({urldapintura: req.body.pintura})
     console.log(pinturaFound);
     if(pinturaFound === null){
        return res.send('Poxa, essa pintura não foi encontrada :(')
@@ -55,17 +57,17 @@ app.post('/getPintura/', async (req,res)=>{
 })
   
 app.post('/postPintura',async (req,res) =>{
-    const pinturaCreated = await modeloUser.create({urldapintura: req.body.pintura})
+    const pinturaCreated = await modeloPintura.create({urldapintura: req.body.pintura})
     res.send(pinturaCreated)
 })
 
 app.put('/putPintura', async (req,res)=>{
-    const updatedPintura = await modeloUser.findOneAndUpdate({urldapintura: req.body.pintura}, {urldapintura: req.body.pintura.newpintura})
+    const updatedPintura = await modeloPintura.findOneAndUpdate({urldapintura: req.body.pintura}, {urldapintura: req.body.pintura.newpintura})
     res.send({ message: "A pintura foi atualizada :)" })
 })
 
 app.delete('/deletePintura', async (req,res)=>{
-    const pinturaDeleted = await modeloUser.deleteOne({urldapintura: req.body.pintura})
+    const pinturaDeleted = await modeloPintura.deleteOne({urldapintura: req.body.pintura})
     res.send(pinturaDeleted)
 })  
 
