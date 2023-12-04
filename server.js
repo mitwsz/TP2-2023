@@ -18,6 +18,7 @@ const modeloUser = mongoose.model('contas', new mongoose.Schema({
 }))
 const modeloPintura = mongoose.model('pinturas', new mongoose.Schema({
     resenhapintura: String,
+    _id: mongoose.Types.ObjectId
 }))
 
 mongoose.connect('mongodb://127.0.0.1:27017/morango')
@@ -48,16 +49,19 @@ app.delete('/delete', async (req,res)=>{
 })  
 
 app.post('/getPintura/', async (req,res)=>{
-    const pinturaFound = await modeloPintura.findOne({resenhapintura: req.body.resenhapintura})
-    console.log(pinturaFound);
-    if(pinturaFound === null){
+    const userFound = await modeloUser.findOne({email: req.body.email, password: req.body.password})
+    if (!userFound) return;
+    const pinturaFound = await modeloPintura.findOne({resenhapintura: req.body.resenhapintura, _id: userFound.id})
+     if(pinturaFound === null){
        return res.send('Poxa, essa pintura não foi encontrada :(')
     }
     res.send(pinturaFound)
 })
   
 app.post('/postPintura',async (req,res) =>{
-    const pinturaCreated = await modeloPintura.create({resenhapintura: req.body.resenhapintura})
+    const userFound = await modeloUser.findOne({email: req.body.email, password: req.body.password})
+    if (!userFound) return;
+    const pinturaCreated = await modeloPintura.create({resenhapintura: req.body.resenhapintura, _id: userFound.id})
     res.send(pinturaCreated)
 })
 
